@@ -19,16 +19,13 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Cache pip dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('automation/requirements.txt') }}
-          restore-keys: ${{ runner.os }}-pip-
-      - name: Install Python dependencies
-        run: pip install -r automation/requirements.txt
+      - name: Install dependencies
+        run: |
+          pip install -r automation/requirements.txt
       - name: Install Playwright browsers
-        run: playwright install chromium --with-deps
+        run: |
+          playwright install-deps
+          playwright install chromium
       - name: Run Spot CTR pipeline
         working-directory: automation
         env:
